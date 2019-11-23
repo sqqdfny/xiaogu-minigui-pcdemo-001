@@ -1,0 +1,9 @@
+
+#ifndef __SHOW_VERIFY_RESULT_MESSAGE_H__
+#define __SHOW_VERIFY_RESULT_MESSAGE_H__
+
+mDialogBox* ShowVerifyResultMessageCreate(HWND parent_hwnd, BOOL ret);
+
+
+#endif  //__SHOW_VERIFY_RESULT_MESSAGE_H__
+//end files

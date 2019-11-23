@@ -1,0 +1,75 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include <minigui/common.h>
+#include <minigui/minigui.h>
+#include <minigui/gdi.h>
+#include <minigui/window.h>
+#include <minigui/control.h>
+#include <mgncs/mgncs.h>
+
+#include "guicommon.h"
+#include "userManageView.h"
+
+
+static HWND dlg = HWND_INVALID;
+
+
+static BITMAP returnBtnBmp;
+//==================================================================================================
+static LRESULT ControlTestWinProc (HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    switch (message)
+    {
+        case MSG_DESTROY:
+            DestroyAllControls (hWnd);
+            dlg = HWND_INVALID;
+            return 0;
+
+        case MSG_CLOSE:
+            DestroyMainWindow (hWnd);
+            MainWindowCleanup (hWnd);
+            return 0;
+    }// end switch (message)
+    return DefaultMainWinProc (hWnd, message, wParam, lParam);
+}
+
+//==================================================================================================
+static void InitCreateInfo (PMAINWINCREATE pCreateInfo)
+{
+    pCreateInfo->dwStyle = WS_CAPTION | WS_BORDER | WS_VISIBLE;
+    pCreateInfo->dwExStyle = WS_EX_NONE;
+    pCreateInfo->spCaption = "用户管理";
+    pCreateInfo->hMenu = 0;
+    pCreateInfo->hCursor = NULL;
+    pCreateInfo->hIcon = 0;
+    pCreateInfo->MainWindowProc = ControlTestWinProc;
+    pCreateInfo->lx = 0;
+    pCreateInfo->ty = 0;
+    pCreateInfo->rx = 480;
+    pCreateInfo->by = 960;
+    pCreateInfo->iBkColor = PIXEL_black;// GetWindowElementColor (WE_MAINC_THREED_BODY);
+    pCreateInfo->dwAddData = 0;
+    pCreateInfo->hHosting = HWND_DESKTOP;
+}
+
+HWND DialogUserManageViewCreate(HWND parent_hwnd)
+{
+    MAINWINCREATE CreateInfo;
+    InitCreateInfo (&CreateInfo);
+    CreateInfo.hHosting = parent_hwnd;
+
+    dlg = CreateMainWindow (&CreateInfo);
+
+    if (dlg != HWND_INVALID)
+    {
+        ShowWindow (dlg, SW_SHOWNORMAL);
+        return dlg;
+    }
+
+    return NULL;
+}
+//==============================================================================================
+//end files
+
